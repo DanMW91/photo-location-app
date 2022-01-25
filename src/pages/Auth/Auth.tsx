@@ -17,7 +17,7 @@ const Auth = (): JSX.Element => {
       )}
       {!login && (
         <>
-          <h2>Login</h2>
+          <h2>Register</h2>
           <RegistrationForm />
         </>
       )}
