@@ -1,8 +1,9 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
+import './Form.css';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -15,7 +16,12 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const LoginForm = () => {
+interface IProps {
+  loading: boolean;
+  toggleLoad(): void;
+}
+
+const LoginForm = ({ loading, toggleLoad }: IProps): JSX.Element => {
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -23,12 +29,17 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(formik);
+      toggleLoad();
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className="login-form">
+      {loading && (
+        <div className="overlay">
+          <CircularProgress />
+        </div>
+      )}
       <TextField
         fullWidth
         id="email"
@@ -54,6 +65,7 @@ const LoginForm = () => {
         helperText={formik.touched.password && formik.errors.password}
         sx={{ mt: 3 }}
       />
+
       <Button
         sx={{ mt: 3 }}
         color="primary"

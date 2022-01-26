@@ -6,19 +6,26 @@ import { Box } from '@mui/system';
 
 const Auth = (): JSX.Element => {
   const [login, setLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Container sx={{ '@media (min-width:780px)': { width: '60%' } }}>
       {login && (
         <>
           <h2>Login</h2>
-          <LoginForm />
+          <LoginForm
+            loading={loading}
+            toggleLoad={() => setLoading((prevState) => !prevState)}
+          />
         </>
       )}
       {!login && (
         <>
           <h2>Register</h2>
-          <RegistrationForm />
+          <RegistrationForm
+            loading={loading}
+            toggleLoad={() => setLoading((prevState) => !prevState)}
+          />
         </>
       )}
       <Box textAlign="center">

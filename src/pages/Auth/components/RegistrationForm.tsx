@@ -2,7 +2,8 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from '@mui/material';
-import { TextField } from '@mui/material';
+import { TextField, CircularProgress } from '@mui/material';
+import './Form.css';
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -19,7 +20,12 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const RegistrationForm = () => {
+interface IProps {
+  loading: boolean;
+  toggleLoad(): void;
+}
+
+const RegistrationForm = ({ loading, toggleLoad }: IProps): JSX.Element => {
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -28,12 +34,18 @@ const RegistrationForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      toggleLoad();
       console.log(formik);
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className="login-form">
+      {loading && (
+        <div className="overlay">
+          <CircularProgress />
+        </div>
+      )}
       <TextField
         fullWidth
         id="username"

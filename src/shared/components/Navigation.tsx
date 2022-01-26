@@ -23,7 +23,6 @@ const Navigation = (): JSX.Element => {
     >
       <Paper>
         <BottomNavigation
-          sx={{ backgroundColor: 'grey.400' }}
           showLabels
           value={value}
           onChange={(event, newValue) => {
