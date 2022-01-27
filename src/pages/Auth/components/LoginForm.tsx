@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
@@ -16,12 +16,15 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-interface IProps {
+export interface FormProps {
   loading: boolean;
   toggleLoad(): void;
 }
 
-const LoginForm = ({ loading, toggleLoad }: IProps): JSX.Element => {
+const LoginForm: FunctionComponent<FormProps> = ({
+  loading,
+  toggleLoad,
+}): JSX.Element => {
   const formik = useFormik({
     initialValues: {
       email: '',

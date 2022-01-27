@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './shared/components/Navigation';
-import Map from './pages/Map';
+import Map from './pages/Map/Map';
 import Auth from './pages/Auth/Auth';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 

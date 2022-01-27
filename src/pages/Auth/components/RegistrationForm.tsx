@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button } from '@mui/material';
 import { TextField, CircularProgress } from '@mui/material';
+import { FormProps } from './LoginForm';
 import './Form.css';
 
 const validationSchema = yup.object().shape({
@@ -20,12 +21,10 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-interface IProps {
-  loading: boolean;
-  toggleLoad(): void;
-}
-
-const RegistrationForm = ({ loading, toggleLoad }: IProps): JSX.Element => {
+const RegistrationForm: FunctionComponent<FormProps> = ({
+  loading,
+  toggleLoad,
+}): JSX.Element => {
   const formik = useFormik({
     initialValues: {
       username: '',
