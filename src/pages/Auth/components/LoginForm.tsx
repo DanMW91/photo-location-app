@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
+import AuthContext from '../../../store/auth-ctx';
 import './Form.css';
 
 const validationSchema = yup.object().shape({
@@ -21,10 +22,20 @@ export interface FormProps {
   toggleLoad(): void;
 }
 
+const USERS = [
+  {
+    username: 'HamSandwich',
+    email: 'ham@ham.com',
+    password: '123123123',
+  },
+];
+
 const LoginForm: FunctionComponent<FormProps> = ({
   loading,
   toggleLoad,
 }): JSX.Element => {
+  const { login } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -32,6 +43,11 @@ const LoginForm: FunctionComponent<FormProps> = ({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      console.log(values);
+      toggleLoad();
+      if (USERS.find((user) => user.password === values.password)) {
+        login();
+      }
       toggleLoad();
     },
   });

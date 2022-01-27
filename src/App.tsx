@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import Navigation from './shared/components/Navigation';
 import Map from './pages/Map/Map';
 import Auth from './pages/Auth/Auth';
+import AuthContext from './store/auth-ctx';
+import { AuthContextProvider } from './store/auth-ctx';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 const theme = createTheme({
@@ -16,6 +23,8 @@ const theme = createTheme({
 });
 
 function App() {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -23,7 +32,10 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/map" element={<Map />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/auth"
+            element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
+          />
         </Routes>
       </Router>
     </ThemeProvider>

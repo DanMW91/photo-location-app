@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -6,11 +6,14 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import { Paper } from '@mui/material';
+import AuthContext from '../../store/auth-ctx';
 
 const Navigation = (): JSX.Element => {
   const [value, setValue] = useState();
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   return (
     <Box
@@ -35,12 +38,7 @@ const Navigation = (): JSX.Element => {
             to="/log"
             icon={<RestoreIcon />}
           />
-          <BottomNavigationAction
-            component={Link}
-            label="Login"
-            to="/auth"
-            icon={<PersonIcon />}
-          />
+
           <BottomNavigationAction
             component={Link}
             label="Favorites"
@@ -53,6 +51,23 @@ const Navigation = (): JSX.Element => {
             to="/map"
             icon={<LocationOnIcon />}
           />
+          {isLoggedIn && (
+            <BottomNavigationAction
+              onClick={logout}
+              component={Link}
+              label="Logout"
+              to="/auth"
+              icon={<LogoutIcon />}
+            />
+          )}
+          {!isLoggedIn && (
+            <BottomNavigationAction
+              component={Link}
+              label="Login"
+              to="/auth"
+              icon={<PersonIcon />}
+            />
+          )}
         </BottomNavigation>
       </Paper>
     </Box>
