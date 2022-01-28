@@ -7,7 +7,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Navigation from './shared/components/Navigation';
-import Map from './pages/Map/Map';
+import MapPage from './pages/Map/MapPage';
 import Auth from './pages/Auth/Auth';
 import AuthContext from './store/auth-ctx';
 import { AuthContextProvider } from './store/auth-ctx';
@@ -31,7 +31,7 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
-          <Route path="/map" element={<Map />} />
+          <Route path="/map" element={<MapPage />} />
           <Route
             path="/auth"
             element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
