@@ -1,4 +1,10 @@
-import { useState, useEffect, FunctionComponent, useContext } from 'react';
+import {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useContext,
+  useRef,
+} from 'react';
 import MAP_API_KEY from '../../dev-api-key';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { Container, Paper } from '@mui/material';
@@ -40,6 +46,7 @@ const MapPage: FunctionComponent = (): JSX.Element => {
     lng: 0,
   });
   const [openMarkerModal, setOpenMarkerModal] = useState(false);
+  const clickedCoordsRef = useRef({ lat: 0, lng: 0 });
 
   const handleClickOpenMarkerModal = () => {
     setOpenMarkerModal(true);
@@ -73,10 +80,10 @@ const MapPage: FunctionComponent = (): JSX.Element => {
   };
 
   const handleMapClick = (e: google.maps.MapMouseEvent) => {
-    // avoid directly mutating state
-    setOpenMarkerModal(true);
     const coords = e.latLng.toJSON();
-    console.log(coords);
+    clickedCoordsRef.current = coords;
+    setOpenMarkerModal(true);
+
     // console.log(clicks);
     // setClicks([...clicks, e.latLng]);
   };
@@ -116,6 +123,7 @@ const MapPage: FunctionComponent = (): JSX.Element => {
         >
           {openMarkerModal && (
             <AddMarkerModal
+              clickedCoords={clickedCoordsRef.current}
               handleClickOpen={handleClickOpenMarkerModal}
               handleClose={handleCloseMarkerModal}
               open={openMarkerModal}

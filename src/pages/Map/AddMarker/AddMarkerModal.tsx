@@ -9,6 +9,7 @@ import AddMarkerForm from './AddMarkerForm';
 
 interface AddMarkerModalProps {
   open: boolean;
+  clickedCoords: { lat: number; lng: number };
   handleClickOpen(): void;
   handleClose(): void;
 }
@@ -17,6 +18,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
   open,
   handleClickOpen,
   handleClose,
+  clickedCoords,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -29,8 +31,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Add a new marker at {clickedCoords}?
           </DialogContentText>
           <AddMarkerForm
             loading={loading}
