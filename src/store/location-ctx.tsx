@@ -34,20 +34,48 @@ export interface PhotoInterface {
 }
 
 interface LocationContextInterface {
-  location: LocationInterface | undefined;
-  photos: PhotoInterface[] | undefined;
+  location: LocationInterface;
+  photos: PhotoInterface[];
   setActiveLocation(location: LocationInterface): void;
 }
 
-const LocationContext = React.createContext<LocationContextInterface | null>(
-  null
-);
+const LocationContext = React.createContext<LocationContextInterface>({
+  location: {
+    id: '',
+    coords: { lat: 0, lng: 0 },
+    name: '',
+    description: '',
+  },
+  photos: [
+    {
+      title: '',
+      url: '',
+      description: '',
+      userId: '',
+      locationId: '',
+    },
+  ],
+  setActiveLocation(location: LocationInterface) {},
+});
 
 export const LocationContextProvider: FunctionComponent = ({
   children,
 }): JSX.Element => {
-  const [location, setLocation] = useState<LocationInterface>();
-  const [photos, setImages] = useState<PhotoInterface[]>();
+  const [location, setLocation] = useState<LocationInterface>({
+    id: '',
+    coords: { lat: 0, lng: 0 },
+    name: '',
+    description: '',
+  });
+  const [photos, setPhotos] = useState<PhotoInterface[]>([
+    {
+      title: '',
+      url: '',
+      description: '',
+      userId: '',
+      locationId: '',
+    },
+  ]);
 
   const setActiveLocation = useCallback((location: LocationInterface) => {
     // TO DO fetch location from back-end
@@ -60,7 +88,7 @@ export const LocationContextProvider: FunctionComponent = ({
       const locationPhotos = PHOTOS.filter(
         (photo) => photo.locationId === location.id
       );
-      setImages(locationPhotos);
+      setPhotos(locationPhotos);
     }
   }, [location]);
 

@@ -4,7 +4,7 @@ import PhotoCard from './PhotoCard';
 import { PhotoInterface } from '../../../../store/location-ctx';
 
 interface PhotoListProps {
-  images: PhotoInterface[] | undefined;
+  images: PhotoInterface[];
 }
 
 const PhotoList: FunctionComponent<PhotoListProps> = ({
@@ -12,7 +12,7 @@ const PhotoList: FunctionComponent<PhotoListProps> = ({
 }): JSX.Element => {
   return (
     <>
-      {images?.map((photo, i) => {
+      {images.map((photo, i) => {
         return (
           <>
             <PhotoCard key={i} photo={photo} />

@@ -12,15 +12,18 @@ interface MarkerProps extends google.maps.MarkerOptions {
   markerDetails: MarkerDetails;
 }
 
+interface MarkerInterface extends google.maps.Marker {
+  hasClickListener?: boolean;
+}
+
 const Marker: FunctionComponent<MarkerProps> = (props) => {
-  const [marker, setMarker] = useState<google.maps.Marker>();
+  const [marker, setMarker] = useState<MarkerInterface>();
   const locationCtx = useContext(LocationContext);
   // const [clicked, setClicked] = useState(false);
 
   const click = useCallback(
     (e) => {
       // markerDetails received from props
-      console.log('clicked marker');
       const markerDetails = props.markerDetails;
       // set this markers details as the selected marker in MapPage.tsx
       locationCtx?.setActiveLocation(markerDetails);
@@ -31,7 +34,10 @@ const Marker: FunctionComponent<MarkerProps> = (props) => {
   useEffect(() => {
     if (marker) {
       // attach listener only when new marker is set
-      marker.addListener('click', click);
+      if (!marker.hasClickListener) {
+        marker.addListener('click', click);
+        marker.hasClickListener = true;
+      }
     }
   }, [marker, click]);
 

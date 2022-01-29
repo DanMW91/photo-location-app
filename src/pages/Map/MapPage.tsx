@@ -24,6 +24,12 @@ const markers = [
     name: 'Barbican Estate',
     description: 'Amazing Brutalist Architecture',
   },
+  {
+    id: 'loc2',
+    coords: { lat: 54.52019998206608, lng: -0.09376439878087152 },
+    name: 'Barbican Estate',
+    description: 'Amazing Brutalist Architecture',
+  },
 ];
 
 const MapPage: FunctionComponent = (): JSX.Element => {
@@ -98,7 +104,7 @@ const MapPage: FunctionComponent = (): JSX.Element => {
           }}
           elevation={2}
         >
-          {locationCtx?.location && (
+          {locationCtx.location && (
             <LocationDetail locationDetail={locationCtx.location} />
           )}
         </Paper>
