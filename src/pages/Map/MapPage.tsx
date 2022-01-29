@@ -1,21 +1,28 @@
-import { useState, useEffect, FunctionComponent, useCallback } from 'react';
+import { useState, useEffect, FunctionComponent, useContext } from 'react';
 import MAP_API_KEY from '../../dev-api-key';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import { Container, Paper } from '@mui/material';
 import Marker from './Marker';
 import Map from './Map';
+import LocationDetail from './LocationDetail/LocationDetail';
+import LocationContext from '../../store/location-ctx';
+
+export interface MarkerDetails {
+  id: string;
+  coords: {
+    lat: number;
+    lng: number;
+  };
+  name: string;
+  description: string;
+}
 
 const markers = [
   {
+    id: 'loc1',
     coords: { lat: 51.52019998206608, lng: -0.09376439878087152 },
     name: 'Barbican Estate',
     description: 'Amazing Brutalist Architecture',
-    images: [
-      {
-        url: 'https://en.wikipedia.org/wiki/Barbican_Estate#/media/File:Barbican_towers.jpg',
-        description: 'Taken from my balcony.',
-        user_id: 'u1',
-      },
-    ],
   },
 ];
 
@@ -25,18 +32,15 @@ const MapPage: FunctionComponent = (): JSX.Element => {
     lat: 0,
     lng: 0,
   });
+  const locationCtx = useContext(LocationContext);
 
-  const setUserLocation = (
-    userCoords: null | { latitude: number; longitude: number } = null
-  ): void => {
-    let latitude = 0;
-    let longitude = 0;
-
-    if (userCoords) {
-      console.log(userCoords);
-      ({ latitude, longitude } = userCoords);
-      setCenter({ lng: longitude, lat: latitude });
-    }
+  const setUserLocation = (userCoords: {
+    latitude: number;
+    longitude: number;
+  }): void => {
+    console.log(userCoords);
+    const { latitude, longitude } = userCoords;
+    setCenter({ lng: longitude, lat: latitude });
   };
 
   // fetch users location and center map
@@ -60,10 +64,6 @@ const MapPage: FunctionComponent = (): JSX.Element => {
     // setClicks([...clicks, e.latLng]);
   };
 
-  const handleMarkerClick = useCallback((e: google.maps.MapMouseEvent) => {
-    console.log(e);
-  }, []);
-
   const onIdle = (m: google.maps.Map) => {
     console.log('onIdle');
     setZoom(m.getZoom()!);
@@ -71,25 +71,39 @@ const MapPage: FunctionComponent = (): JSX.Element => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100%' }}>
-      <Wrapper apiKey={MAP_API_KEY} render={render}>
-        <Map
-          center={center}
-          onClick={handleMapClick}
-          onIdle={onIdle}
-          zoom={zoom}
-          style={{ flexGrow: '1', height: '80vw' }}
+    <>
+      <div style={{ display: 'flex', height: '100%' }}>
+        <Wrapper apiKey={MAP_API_KEY} render={render}>
+          <Map
+            center={center}
+            onClick={handleMapClick}
+            onIdle={onIdle}
+            zoom={zoom}
+            style={{ flexGrow: '1', height: '80vw', margin: '10px' }}
+          >
+            {markers.map((marker, i) => (
+              <Marker key={i} position={marker.coords} markerDetails={marker} />
+            ))}
+          </Map>
+        </Wrapper>
+      </div>
+      <Container sx={{ height: '60%' }}>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflowY: 'scroll',
+            marginBottom: '80px',
+          }}
+          elevation={2}
         >
-          {markers.map((marker, i) => (
-            <Marker
-              key={i}
-              position={marker.coords}
-              onClick={handleMarkerClick}
-            />
-          ))}
-        </Map>
-      </Wrapper>
-    </div>
+          {locationCtx?.location && (
+            <LocationDetail locationDetail={locationCtx.location} />
+          )}
+        </Paper>
+      </Container>
+    </>
   );
 };
 

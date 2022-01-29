@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useDeepCompareEffectForMaps from '../../hooks/deep-compare-maps';
 
 interface MapProps extends google.maps.MapOptions {

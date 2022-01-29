@@ -45,10 +45,12 @@ const LoginForm: FunctionComponent<FormProps> = ({
     onSubmit: (values) => {
       console.log(values);
       toggleLoad();
-      if (USERS.find((user) => user.password === values.password)) {
-        login();
-      }
-      toggleLoad();
+      setTimeout(() => {
+        if (USERS.find((user) => user.password === values.password)) {
+          login();
+        }
+        toggleLoad();
+      }, 1000);
     },
   });
 

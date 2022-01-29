@@ -1,23 +1,42 @@
-import { useState, useEffect, FunctionComponent } from 'react';
+import {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useCallback,
+  useContext,
+} from 'react';
+import LocationContext from '../../store/location-ctx';
+import { MarkerDetails } from './MapPage';
 
 interface MarkerProps extends google.maps.MarkerOptions {
-  onClick: (e: google.maps.MapMouseEvent) => void;
+  markerDetails: MarkerDetails;
 }
 
-const Marker: FunctionComponent<MarkerProps> = (options) => {
+const Marker: FunctionComponent<MarkerProps> = (props) => {
   const [marker, setMarker] = useState<google.maps.Marker>();
-  const [clicked, setClicked] = useState(false);
+  const locationCtx = useContext(LocationContext);
+  // const [clicked, setClicked] = useState(false);
+
+  const click = useCallback(
+    (e) => {
+      // markerDetails received from props
+      console.log('clicked marker');
+      const markerDetails = props.markerDetails;
+      // set this markers details as the selected marker in MapPage.tsx
+      locationCtx?.setActiveLocation(markerDetails);
+    },
+    [props, locationCtx]
+  );
 
   useEffect(() => {
     if (marker) {
-      const click = options.onClick;
+      // attach listener only when new marker is set
       marker.addListener('click', click);
     }
-  }, [marker, options.onClick]);
+  }, [marker, click]);
 
   useEffect(() => {
     if (!marker) {
-      console.log('new marker');
       setMarker(new google.maps.Marker());
     }
 
@@ -31,10 +50,10 @@ const Marker: FunctionComponent<MarkerProps> = (options) => {
 
   useEffect(() => {
     if (marker) {
-      console.log(options);
-      marker.setOptions(options);
+      console.log(props);
+      marker.setOptions(props);
     }
-  }, [marker, options]);
+  }, [marker, props]);
 
   return null;
 };

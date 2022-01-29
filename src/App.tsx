@@ -10,8 +10,8 @@ import Navigation from './shared/components/Navigation';
 import MapPage from './pages/Map/MapPage';
 import Auth from './pages/Auth/Auth';
 import AuthContext from './store/auth-ctx';
-import { AuthContextProvider } from './store/auth-ctx';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { LocationContextProvider } from './store/location-ctx';
 
 const theme = createTheme({
   palette: {
@@ -28,16 +28,20 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Navigation />
-        <Routes>
-          <Route path="/map" element={<MapPage />} />
-          <Route
-            path="/auth"
-            element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
-          />
-        </Routes>
-      </Router>
+      <LocationContextProvider>
+        <Router>
+          <Navigation />
+          <div style={{ zIndex: 100 }}>
+            <Routes>
+              <Route path="/map" element={<MapPage />} />
+              <Route
+                path="/auth"
+                element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
+              />
+            </Routes>
+          </div>
+        </Router>
+      </LocationContextProvider>
     </ThemeProvider>
   );
 }

@@ -18,8 +18,9 @@ const Navigation = (): JSX.Element => {
   return (
     <Box
       sx={{
+        zIndex: 1500,
         width: '100%',
-        position: 'absolute',
+        position: 'fixed',
         bottom: '0px',
         '@media (min-width:780px)': { position: 'relative' },
       }}
