@@ -13,13 +13,7 @@ const PhotoList: FunctionComponent<PhotoListProps> = ({
   return (
     <>
       {images.map((photo, i) => {
-        return (
-          <>
-            <PhotoCard key={i} photo={photo} />
-            <PhotoCard key={i} photo={photo} />
-            <PhotoCard key={i} photo={photo} />
-          </>
-        );
+        return <PhotoCard key={i} photo={photo} />;
       })}
     </>
   );

@@ -6,6 +6,7 @@ import Marker from './Marker';
 import Map from './Map';
 import LocationDetail from './LocationDetail/LocationDetail';
 import LocationContext from '../../store/location-ctx';
+import AddMarkerModal from './AddMarker/AddMarkerModal';
 
 export interface MarkerDetails {
   id: string;
@@ -38,13 +39,21 @@ const MapPage: FunctionComponent = (): JSX.Element => {
     lat: 0,
     lng: 0,
   });
+  const [openMarkerModal, setOpenMarkerModal] = useState(false);
+
+  const handleClickOpenMarkerModal = () => {
+    setOpenMarkerModal(true);
+  };
+
+  const handleCloseMarkerModal = () => {
+    setOpenMarkerModal(false);
+  };
   const locationCtx = useContext(LocationContext);
 
   const setUserLocation = (userCoords: {
     latitude: number;
     longitude: number;
   }): void => {
-    console.log(userCoords);
     const { latitude, longitude } = userCoords;
     setCenter({ lng: longitude, lat: latitude });
   };
@@ -65,13 +74,14 @@ const MapPage: FunctionComponent = (): JSX.Element => {
 
   const handleMapClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    console.log(e);
+    setOpenMarkerModal(true);
+    const coords = e.latLng.toJSON();
+    console.log(coords);
     // console.log(clicks);
     // setClicks([...clicks, e.latLng]);
   };
 
   const onIdle = (m: google.maps.Map) => {
-    console.log('onIdle');
     setZoom(m.getZoom()!);
     setCenter(m.getCenter()!.toJSON());
   };
@@ -104,6 +114,14 @@ const MapPage: FunctionComponent = (): JSX.Element => {
           }}
           elevation={2}
         >
+          {openMarkerModal && (
+            <AddMarkerModal
+              handleClickOpen={handleClickOpenMarkerModal}
+              handleClose={handleCloseMarkerModal}
+              open={openMarkerModal}
+            />
+          )}
+
           {locationCtx.location && (
             <LocationDetail locationDetail={locationCtx.location} />
           )}

@@ -13,6 +13,22 @@ const PHOTOS: PhotoInterface[] = [
     userId: 'u1',
     locationId: 'loc1',
   },
+  {
+    title: 'Barbican From Above',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Barbicanestatefromabove.jpg/1920px-Barbicanestatefromabove.jpg',
+    description:
+      'Got this shot with my drone before they got bascially outlawed! Very pleased with the result.',
+    userId: 'u1',
+    locationId: 'loc1',
+  },
+  {
+    title: 'Barbican Centre',
+    url: 'https://static.standard.co.uk/homesandproperty/s3fs-public/thumbnails/image/2019/07/05/17/Barbican10-4.jpg?width=990',
+    description:
+      'The beautiful area behind the barbican center. Shame about all the people, suns out guns out eh?',
+    userId: 'u1',
+    locationId: 'loc1',
+  },
 ];
 
 interface LocationInterface {
