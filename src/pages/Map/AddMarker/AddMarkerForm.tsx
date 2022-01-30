@@ -1,11 +1,18 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
-
-import { FormProps } from '../../Auth/components/LoginForm';
+import { MarkerFormProps } from './AddMarkerModal';
+import { MarkerDetails } from '../MapPage';
+import { uuid } from 'uuidv4';
 import '../../Auth/components/Form.css';
+
+interface AddMarkerFormProps extends MarkerFormProps {
+  onAddMarker(newMarker: MarkerDetails): void;
+  setMarkerId(markerId: string): void;
+  clickedCoords: { lat: number; lng: number };
+}
 
 const validationSchema = yup.object().shape({
   locationName: yup
@@ -15,25 +22,37 @@ const validationSchema = yup.object().shape({
   photoUrl: yup.string().required('Photo url is required'),
 });
 
-const AddMarkerForm: FunctionComponent<FormProps> = ({
+const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
   loading,
   toggleLoad,
-}): JSX.Element => {
+  switchForm,
+  setMarkerId,
+  clickedCoords,
+  onAddMarker,
+}) => {
   const formik = useFormik({
     initialValues: {
       locationName: '',
-      photoUrl: '',
+      description: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
       toggleLoad();
-      // setTimeout(() => {
-      //   if (USERS.find((user) => user.password === values.password)) {
-      //     login();
-      //   }
-      //   toggleLoad();
-      // }, 1000);
+
+      setTimeout(() => {
+        const locId = uuid();
+        const newLoc = {
+          id: locId,
+          coords: clickedCoords,
+          name: values.locationName,
+          description: values.description,
+        };
+        setMarkerId(locId);
+        onAddMarker(newLoc);
+        switchForm();
+        toggleLoad();
+      }, 1000);
     },
   });
 
@@ -60,14 +79,14 @@ const AddMarkerForm: FunctionComponent<FormProps> = ({
       />
       <TextField
         fullWidth
-        id="photoUrl"
-        name="photoUrl"
-        label="Photo Url"
-        value={formik.values.photoUrl}
+        id="description"
+        name="description"
+        label="Description"
+        value={formik.values.description}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.photoUrl && Boolean(formik.errors.photoUrl)}
-        helperText={formik.touched.photoUrl && formik.errors.photoUrl}
+        error={formik.touched.description && Boolean(formik.errors.description)}
+        helperText={formik.touched.description && formik.errors.description}
         sx={{ mt: 3 }}
       />
 

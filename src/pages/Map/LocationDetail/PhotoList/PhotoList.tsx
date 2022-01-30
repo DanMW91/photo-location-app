@@ -4,15 +4,13 @@ import PhotoCard from './PhotoCard';
 import { PhotoInterface } from '../../../../store/location-ctx';
 
 interface PhotoListProps {
-  images: PhotoInterface[];
+  images: PhotoInterface[] | null;
 }
 
-const PhotoList: FunctionComponent<PhotoListProps> = ({
-  images,
-}): JSX.Element => {
+const PhotoList: FunctionComponent<PhotoListProps> = ({ images }) => {
   return (
     <>
-      {images.map((photo, i) => {
+      {images?.map((photo, i) => {
         return <PhotoCard key={i} photo={photo} />;
       })}
     </>

@@ -24,7 +24,7 @@ export interface MarkerDetails {
   description: string;
 }
 
-const markers = [
+const MARKERS = [
   {
     id: 'loc1',
     coords: { lat: 51.52019998206608, lng: -0.09376439878087152 },
@@ -39,7 +39,8 @@ const markers = [
   },
 ];
 
-const MapPage: FunctionComponent = (): JSX.Element => {
+const MapPage: FunctionComponent = () => {
+  const [markers, setMarkers] = useState<MarkerDetails[]>(MARKERS);
   const [zoom, setZoom] = useState(14); // initial zoom
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: 0,
@@ -56,6 +57,12 @@ const MapPage: FunctionComponent = (): JSX.Element => {
     setOpenMarkerModal(false);
   };
   const locationCtx = useContext(LocationContext);
+
+  const addMarker = (newMarker: MarkerDetails) => {
+    setMarkers((prevState: MarkerDetails[]) => {
+      return [...prevState, newMarker];
+    });
+  };
 
   const setUserLocation = (userCoords: {
     latitude: number;
@@ -123,6 +130,7 @@ const MapPage: FunctionComponent = (): JSX.Element => {
         >
           {openMarkerModal && (
             <AddMarkerModal
+              onAddMarker={addMarker}
               clickedCoords={clickedCoordsRef.current}
               handleClickOpen={handleClickOpenMarkerModal}
               handleClose={handleCloseMarkerModal}

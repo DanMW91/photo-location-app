@@ -6,12 +6,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddMarkerForm from './AddMarkerForm';
+import AddPhotoForm from './AddPhotoForm';
+import { MarkerDetails } from '../MapPage';
+import { FormProps } from '../../Auth/components/LoginForm';
 
 interface AddMarkerModalProps {
   open: boolean;
   clickedCoords: { lat: number; lng: number };
   handleClickOpen(): void;
   handleClose(): void;
+  onAddMarker(newMarker: MarkerDetails): void;
+}
+
+export interface MarkerFormProps extends FormProps {
+  switchForm(): void;
 }
 
 const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
@@ -19,8 +27,11 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
   handleClickOpen,
   handleClose,
   clickedCoords,
+  onAddMarker,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [showMarkerForm, setShowMarkerForm] = useState(true);
+  const [markerId, setMarkerId] = useState('');
 
   return (
     <div>
@@ -28,19 +39,32 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
         Open form dialog
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add a Marker</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Add a new marker at {clickedCoords}?
+            Add a new marker at {clickedCoords.lat}, {clickedCoords.lng}?
           </DialogContentText>
-          <AddMarkerForm
-            loading={loading}
-            toggleLoad={() => setLoading((prevState) => !prevState)}
-          />
+          {showMarkerForm && (
+            <AddMarkerForm
+              clickedCoords={clickedCoords}
+              loading={loading}
+              toggleLoad={() => setLoading((prevState) => !prevState)}
+              switchForm={() => setShowMarkerForm(false)}
+              onAddMarker={onAddMarker}
+              setMarkerId={setMarkerId}
+            />
+          )}
+          {!showMarkerForm && (
+            <AddPhotoForm
+              loading={loading}
+              toggleLoad={() => setLoading((prevState) => !prevState)}
+              switchForm={() => setShowMarkerForm(true)}
+              markerId={markerId}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
       </Dialog>
     </div>
