@@ -1,6 +1,5 @@
-import React, { useState, FunctionComponent, useRef, useEffect } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 import { UserInterface } from '../pages/Auth/components/LoginForm';
-import { USERS } from '../pages/Auth/components/LoginForm';
 
 const AuthContext = React.createContext({
   loginState: {
