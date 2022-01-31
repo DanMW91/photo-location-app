@@ -1,26 +1,53 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { useState, FunctionComponent, useRef, useEffect } from 'react';
+import { UserInterface } from '../pages/Auth/components/LoginForm';
+import { USERS } from '../pages/Auth/components/LoginForm';
 
 const AuthContext = React.createContext({
-  isLoggedIn: false,
-  login(): void {},
+  loginState: {
+    isLoggedIn: false,
+    activeUser: {
+      userId: '',
+      username: '',
+      email: '',
+      password: '',
+    },
+  },
+  login(user: UserInterface): void {},
   logout(): void {},
 });
 
-export const AuthContextProvider: FunctionComponent = ({
-  children,
-}): JSX.Element => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const AuthContextProvider: FunctionComponent = ({ children }) => {
+  const [loginState, setLoginState] = useState({
+    isLoggedIn: false,
+    activeUser: {
+      userId: '',
+      username: '',
+      email: '',
+      password: '',
+    },
+  });
 
-  const login = (): void => {
-    setIsLoggedIn(true);
+  const login = (user: UserInterface): void => {
+    setLoginState({
+      activeUser: user,
+      isLoggedIn: true,
+    });
   };
 
   const logout = (): void => {
-    setIsLoggedIn(false);
+    setLoginState({
+      isLoggedIn: false,
+      activeUser: {
+        userId: '',
+        username: '',
+        email: '',
+        password: '',
+      },
+    });
   };
 
   const contextValue = {
-    isLoggedIn,
+    loginState,
     login,
     logout,
   };

@@ -24,7 +24,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { loginState } = useContext(AuthContext);
 
   return (
     <ThemeProvider theme={theme}>
@@ -37,7 +37,9 @@ function App() {
               <Route path="/map" element={<MapPage />} />
               <Route
                 path="/auth"
-                element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
+                element={
+                  !loginState.isLoggedIn ? <Auth /> : <Navigate to="/map" />
+                }
               />
               <Route path="/user/:userId" element={<ShowUser />} />
             </Routes>

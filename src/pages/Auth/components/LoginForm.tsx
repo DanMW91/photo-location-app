@@ -29,6 +29,12 @@ export const USERS = [
     email: 'ham@ham.com',
     password: '123123123',
   },
+  {
+    userId: 'u2',
+    username: 'cheese sarn',
+    email: 'sarn@sarn.com',
+    password: '123123123',
+  },
 ];
 
 export interface UserInterface {
@@ -38,10 +44,7 @@ export interface UserInterface {
   password: string;
 }
 
-const LoginForm: FunctionComponent<FormProps> = ({
-  loading,
-  toggleLoad,
-}): JSX.Element => {
+const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
   const { login } = useContext(AuthContext);
 
   const formik = useFormik({
@@ -51,11 +54,15 @@ const LoginForm: FunctionComponent<FormProps> = ({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       toggleLoad();
       setTimeout(() => {
-        if (USERS.find((user) => user.password === values.password)) {
-          login();
+        const currentUser = USERS.find(
+          (user) =>
+            user.email === values.email && user.password === values.password
+        );
+        if (currentUser) {
+          login(currentUser);
         }
         toggleLoad();
       }, 1000);

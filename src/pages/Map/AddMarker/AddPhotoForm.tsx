@@ -6,6 +6,7 @@ import { TextField } from '@mui/material';
 import { PhotoInterface } from '../../../store/location-ctx';
 import { MarkerFormProps } from './AddMarkerModal';
 import LocationContext from '../../../store/location-ctx';
+import AuthContext from '../../../store/auth-ctx';
 import '../../Auth/components/Form.css';
 
 interface AddPhotoFormProps extends MarkerFormProps {
@@ -32,6 +33,7 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
   closeMarkerModal,
 }) => {
   const { addPhoto } = useContext(LocationContext);
+  const { loginState } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -43,11 +45,11 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
     onSubmit: (values) => {
       console.log(values);
       toggleLoad();
-
+      console.log(loginState.activeUser.userId);
       setTimeout(() => {
         const newPhoto: PhotoInterface = {
           // need to set user in authcontext and extract current user from there
-          userId: 'u1',
+          userId: loginState.activeUser.userId,
           title: values.photoTitle,
           description: values.photoDescription,
           url: values.photoUrl,

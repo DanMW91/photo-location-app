@@ -15,7 +15,7 @@ const LocationDetail: FunctionComponent<LocationProps> = ({
   return (
     <>
       <div>{locationDetail.name}</div>
-      <PhotoList images={locationCtx.photos} />
+      <PhotoList isMapPage={true} images={locationCtx.photos} />
     </>
   );
 };

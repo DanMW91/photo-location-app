@@ -56,7 +56,7 @@ const Marker: FunctionComponent<MarkerProps> = (props) => {
 
   useEffect(() => {
     if (marker) {
-      console.log(props);
+      // console.log(props);
       marker.setOptions(props);
     }
   }, [marker, props]);

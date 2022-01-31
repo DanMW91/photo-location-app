@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 
 interface PhotoProps {
   photo: { title: string; url: string; description: string; userId: string };
+  isMapPage: boolean | undefined;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -34,7 +35,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const PhotoCard: FunctionComponent<PhotoProps> = ({ photo }) => {
+const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
   const [expanded, setExpanded] = useState(false);
   const [user, setUser] = useState<UserInterface | undefined>();
 
@@ -68,10 +69,17 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo }) => {
         }
         title={photo.title}
         subheader={
-          <div>
-            Uploaded by:{' '}
-            <Link to={`/user/${user?.userId}`}>{user?.username}</Link>
-          </div>
+          isMapPage && (
+            <div>
+              Uploaded by:{' '}
+              <Link
+                style={{ textDecoration: 'none' }}
+                to={`/user/${user?.userId}`}
+              >
+                {user?.username}
+              </Link>
+            </div>
+          )
         }
       />
       <CardMedia

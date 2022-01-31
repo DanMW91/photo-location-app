@@ -76,9 +76,7 @@ const LocationContext = React.createContext<LocationContextInterface>({
   addPhoto(photo: PhotoInterface) {},
 });
 
-export const LocationContextProvider: FunctionComponent = ({
-  children,
-}): JSX.Element => {
+export const LocationContextProvider: FunctionComponent = ({ children }) => {
   const [location, setLocation] = useState<LocationInterface | null>(null);
   const [photos, setPhotos] = useState<PhotoInterface[] | null>(null);
 

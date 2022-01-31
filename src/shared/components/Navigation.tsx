@@ -13,7 +13,7 @@ import AuthContext from '../../store/auth-ctx';
 
 const Navigation: FunctionComponent = () => {
   const [value, setValue] = useState();
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { loginState, logout } = useContext(AuthContext);
 
   return (
     <Box
@@ -52,7 +52,7 @@ const Navigation: FunctionComponent = () => {
             to="/map"
             icon={<LocationOnIcon />}
           />
-          {isLoggedIn && (
+          {loginState.isLoggedIn && (
             <BottomNavigationAction
               onClick={logout}
               component={Link}
@@ -61,7 +61,7 @@ const Navigation: FunctionComponent = () => {
               icon={<LogoutIcon />}
             />
           )}
-          {!isLoggedIn && (
+          {!loginState.isLoggedIn && (
             <BottomNavigationAction
               component={Link}
               label="Login"
