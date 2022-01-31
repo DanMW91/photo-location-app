@@ -1,15 +1,18 @@
-import { FunctionComponent, useRef } from 'react';
+import { FunctionComponent, useRef, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
 import { PhotoInterface } from '../../../store/location-ctx';
 import { MarkerFormProps } from './AddMarkerModal';
+import LocationContext from '../../../store/location-ctx';
 import { uuid } from 'uuidv4';
 import '../../Auth/components/Form.css';
 
 interface AddPhotoFormProps extends MarkerFormProps {
-  markerId: string;
+  markerId: string | undefined;
+  addMarker(): void;
+  closeMarkerModal(): void;
 }
 
 const validationSchema = yup.object().shape({
@@ -25,7 +28,12 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
   loading,
   toggleLoad,
   switchForm,
+  markerId,
+  addMarker,
+  closeMarkerModal,
 }) => {
+  const { addPhoto } = useContext(LocationContext);
+
   const formik = useFormik({
     initialValues: {
       photoTitle: '',
@@ -38,12 +46,22 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
       toggleLoad();
 
       setTimeout(() => {
+        const newPhoto: PhotoInterface = {
+          // need to set user in authcontext and extract current user from there
+          userId: 'u1',
+          title: values.photoTitle,
+          description: values.photoDescription,
+          url: values.photoUrl,
+          locationId: markerId,
+        };
+        addPhoto(newPhoto);
+        addMarker();
         switchForm();
         toggleLoad();
+        closeMarkerModal();
       }, 1000);
     },
   });
-  const photoRef = useRef<PhotoInterface>();
 
   return (
     <form onSubmit={formik.handleSubmit} className="login-form">

@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from 'react';
+import { useState, FunctionComponent, useRef } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,7 +15,7 @@ interface AddMarkerModalProps {
   clickedCoords: { lat: number; lng: number };
   handleClickOpen(): void;
   handleClose(): void;
-  onAddMarker(newMarker: MarkerDetails): void;
+  onAddMarker(newMarker: MarkerDetails | undefined): void;
 }
 
 export interface MarkerFormProps extends FormProps {
@@ -31,7 +31,16 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [showMarkerForm, setShowMarkerForm] = useState(true);
-  const [markerId, setMarkerId] = useState('');
+  // const [markerId, setMarkerId] = useState('');
+  const markerRef = useRef<MarkerDetails>();
+
+  const storeMarkerRef = (marker: MarkerDetails) => {
+    markerRef.current = marker;
+  };
+
+  const addMarker = () => {
+    onAddMarker(markerRef.current);
+  };
 
   return (
     <div>
@@ -50,8 +59,8 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
               loading={loading}
               toggleLoad={() => setLoading((prevState) => !prevState)}
               switchForm={() => setShowMarkerForm(false)}
-              onAddMarker={onAddMarker}
-              setMarkerId={setMarkerId}
+              storeMarker={storeMarkerRef}
+              // setMarkerId={setMarkerId}
             />
           )}
           {!showMarkerForm && (
@@ -59,7 +68,9 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
               loading={loading}
               toggleLoad={() => setLoading((prevState) => !prevState)}
               switchForm={() => setShowMarkerForm(true)}
-              markerId={markerId}
+              markerId={markerRef.current?.id}
+              addMarker={addMarker}
+              closeMarkerModal={handleClose}
             />
           )}
         </DialogContent>

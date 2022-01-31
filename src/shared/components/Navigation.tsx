@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, FunctionComponent } from 'react';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { Paper } from '@mui/material';
 import AuthContext from '../../store/auth-ctx';
 
-const Navigation = (): JSX.Element => {
+const Navigation: FunctionComponent = () => {
   const [value, setValue] = useState();
   const { isLoggedIn, logout } = useContext(AuthContext);
 

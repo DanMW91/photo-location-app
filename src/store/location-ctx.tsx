@@ -46,7 +46,7 @@ export interface PhotoInterface {
   url: string;
   description: string;
   userId: string;
-  locationId: string;
+  locationId: string | undefined;
 }
 
 interface LocationContextInterface {

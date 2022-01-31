@@ -9,9 +9,9 @@ import { uuid } from 'uuidv4';
 import '../../Auth/components/Form.css';
 
 interface AddMarkerFormProps extends MarkerFormProps {
-  onAddMarker(newMarker: MarkerDetails): void;
-  setMarkerId(markerId: string): void;
+  // setMarkerId(markerId: string): void;
   clickedCoords: { lat: number; lng: number };
+  storeMarker(marker: MarkerDetails): void;
 }
 
 const validationSchema = yup.object().shape({
@@ -19,16 +19,19 @@ const validationSchema = yup.object().shape({
     .string()
     .min(5, 'Location must have a minimum name length of 5 characters.')
     .required('Location name is required.'),
-  photoUrl: yup.string().required('Photo url is required'),
+  description: yup
+    .string()
+    .min(10, 'Description must have a minimum length of 10 characters.')
+    .required('description is required'),
 });
 
 const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
   loading,
   toggleLoad,
   switchForm,
-  setMarkerId,
+  // setMarkerId,
   clickedCoords,
-  onAddMarker,
+  storeMarker,
 }) => {
   const formik = useFormik({
     initialValues: {
@@ -41,15 +44,16 @@ const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
       toggleLoad();
 
       setTimeout(() => {
-        const locId = uuid();
+        const locId = 'idnumberhere';
         const newLoc = {
           id: locId,
           coords: clickedCoords,
           name: values.locationName,
           description: values.description,
         };
-        setMarkerId(locId);
-        onAddMarker(newLoc);
+        console.log(newLoc);
+        // setMarkerId(locId);
+        storeMarker(newLoc);
         switchForm();
         toggleLoad();
       }, 1000);
