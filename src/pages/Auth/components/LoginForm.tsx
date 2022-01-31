@@ -64,7 +64,6 @@ const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
         if (currentUser) {
           login(currentUser);
         }
-        toggleLoad();
       }, 1000);
     },
   });
