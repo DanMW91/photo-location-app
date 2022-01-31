@@ -5,7 +5,7 @@ import React, {
   useCallback,
 } from 'react';
 
-const PHOTOS: PhotoInterface[] = [
+export const PHOTOS: PhotoInterface[] = [
   {
     title: 'Barbican wide shot',
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Barbican_towers.jpg/1920px-Barbican_towers.jpg',

@@ -9,6 +9,7 @@ import {
 import Navigation from './shared/components/Navigation';
 import MapPage from './pages/Map/MapPage';
 import Auth from './pages/Auth/Auth';
+import ShowUser from './pages/ShowUser/ShowUser';
 import AuthContext from './store/auth-ctx';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { LocationContextProvider } from './store/location-ctx';
@@ -38,6 +39,7 @@ function App() {
                 path="/auth"
                 element={!isLoggedIn ? <Auth /> : <Navigate to="/map" />}
               />
+              <Route path="/user/:userId" element={<ShowUser />} />
             </Routes>
           </div>
         </Router>

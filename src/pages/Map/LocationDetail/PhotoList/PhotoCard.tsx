@@ -13,6 +13,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { USERS, UserInterface } from '../../../Auth/components/LoginForm';
+import { Link } from 'react-router-dom';
 
 interface PhotoProps {
   photo: { title: string; url: string; description: string; userId: string };
@@ -66,7 +67,12 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo }) => {
           </IconButton>
         }
         title={photo.title}
-        subheader={`Uploaded by ${user?.username}`}
+        subheader={
+          <div>
+            Uploaded by:{' '}
+            <Link to={`/user/${user?.userId}`}>{user?.username}</Link>
+          </div>
+        }
       />
       <CardMedia
         component="img"
