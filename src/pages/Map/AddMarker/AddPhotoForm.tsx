@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef, useContext } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
@@ -6,7 +6,6 @@ import { TextField } from '@mui/material';
 import { PhotoInterface } from '../../../store/location-ctx';
 import { MarkerFormProps } from './AddMarkerModal';
 import LocationContext from '../../../store/location-ctx';
-import { uuid } from 'uuidv4';
 import '../../Auth/components/Form.css';
 
 interface AddPhotoFormProps extends MarkerFormProps {

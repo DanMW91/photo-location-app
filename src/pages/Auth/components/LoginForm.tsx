@@ -22,7 +22,7 @@ export interface FormProps {
   toggleLoad(): void;
 }
 
-const USERS = [
+export const USERS = [
   {
     userId: 'u1',
     username: 'HamSandwich',
@@ -30,6 +30,13 @@ const USERS = [
     password: '123123123',
   },
 ];
+
+export interface UserInterface {
+  userId: string;
+  username: string;
+  email: string;
+  password: string;
+}
 
 const LoginForm: FunctionComponent<FormProps> = ({
   loading,

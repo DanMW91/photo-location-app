@@ -5,7 +5,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
 import { MarkerFormProps } from './AddMarkerModal';
 import { MarkerDetails } from '../MapPage';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 import '../../Auth/components/Form.css';
 
 interface AddMarkerFormProps extends MarkerFormProps {
@@ -44,7 +44,7 @@ const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
       toggleLoad();
 
       setTimeout(() => {
-        const locId = 'idnumberhere';
+        const locId = uuidv4();
         const newLoc = {
           id: locId,
           coords: clickedCoords,

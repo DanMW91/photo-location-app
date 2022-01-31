@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react';
+import { useState, FunctionComponent, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,6 +12,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { USERS, UserInterface } from '../../../Auth/components/LoginForm';
 
 interface PhotoProps {
   photo: { title: string; url: string; description: string; userId: string };
@@ -34,6 +35,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const PhotoCard: FunctionComponent<PhotoProps> = ({ photo }) => {
   const [expanded, setExpanded] = useState(false);
+  const [user, setUser] = useState<UserInterface | undefined>();
+
+  useEffect(() => {
+    const photoUser: UserInterface | undefined = USERS.find(
+      (user) => user.userId === photo.userId
+    );
+    setUser(photoUser);
+  }, [photo.userId]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -57,7 +66,7 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo }) => {
           </IconButton>
         }
         title={photo.title}
-        subheader="September 14, 2016"
+        subheader={`Uploaded by ${user?.username}`}
       />
       <CardMedia
         component="img"
