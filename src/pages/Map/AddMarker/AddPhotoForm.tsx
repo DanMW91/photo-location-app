@@ -45,11 +45,11 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
     onSubmit: (values) => {
       console.log(values);
       toggleLoad();
-      console.log(loginState.activeUser.userId);
+      console.log(loginState.activeUser.id);
       setTimeout(() => {
         const newPhoto: PhotoInterface = {
           // need to set user in authcontext and extract current user from there
-          userId: loginState.activeUser.userId,
+          userId: loginState.activeUser.id,
           title: values.photoTitle,
           description: values.photoDescription,
           url: values.photoUrl,

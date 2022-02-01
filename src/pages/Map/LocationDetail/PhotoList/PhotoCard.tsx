@@ -41,7 +41,7 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
 
   useEffect(() => {
     const photoUser: UserInterface | undefined = USERS.find(
-      (user) => user.userId === photo.userId
+      (user) => user.id === photo.userId
     );
     setUser(photoUser);
   }, [photo.userId]);
@@ -72,10 +72,7 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
           isMapPage && (
             <div>
               Uploaded by:{' '}
-              <Link
-                style={{ textDecoration: 'none' }}
-                to={`/user/${user?.userId}`}
-              >
+              <Link style={{ textDecoration: 'none' }} to={`/user/${user?.id}`}>
                 {user?.username}
               </Link>
             </div>

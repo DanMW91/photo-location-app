@@ -13,7 +13,7 @@ const ShowUser: FunctionComponent = () => {
   const [userPhotos, setUserPhotos] = useState<PhotoInterface[] | null>(null);
 
   useEffect(() => {
-    const foundUser = USERS.find((user) => user.userId === userId);
+    const foundUser = USERS.find((user) => user.id === userId);
     setUser(foundUser);
     const foundPhotos = PHOTOS.filter((photos) => photos.userId === userId);
     setUserPhotos(foundPhotos);

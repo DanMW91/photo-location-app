@@ -5,10 +5,9 @@ const AuthContext = React.createContext({
   loginState: {
     isLoggedIn: false,
     activeUser: {
-      userId: '',
+      id: '',
       username: '',
       email: '',
-      password: '',
     },
   },
   login(user: UserInterface): void {},
@@ -19,10 +18,9 @@ export const AuthContextProvider: FunctionComponent = ({ children }) => {
   const [loginState, setLoginState] = useState({
     isLoggedIn: false,
     activeUser: {
-      userId: '',
+      id: '',
       username: '',
       email: '',
-      password: '',
     },
   });
 
@@ -37,10 +35,9 @@ export const AuthContextProvider: FunctionComponent = ({ children }) => {
     setLoginState({
       isLoggedIn: false,
       activeUser: {
-        userId: '',
+        id: '',
         username: '',
         email: '',
-        password: '',
       },
     });
   };

@@ -24,13 +24,13 @@ export interface FormProps {
 
 export const USERS = [
   {
-    userId: 'u1',
+    id: 'u1',
     username: 'HamSandwich',
     email: 'ham@ham.com',
     password: '123123123',
   },
   {
-    userId: 'u2',
+    id: 'u2',
     username: 'cheese sarn',
     email: 'sarn@sarn.com',
     password: '123123123',
@@ -38,10 +38,10 @@ export const USERS = [
 ];
 
 export interface UserInterface {
-  userId: string;
+  id: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
 }
 
 const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
@@ -54,19 +54,38 @@ const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // console.log(values);
-      toggleLoad();
-      setTimeout(() => {
-        const currentUser = USERS.find(
-          (user) =>
-            user.email === values.email && user.password === values.password
-        );
-        if (currentUser) {
-          login(currentUser);
-        }
-      }, 1000);
+      console.log(values);
+
+      loginHandler(values);
     },
   });
+
+  const loginHandler = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
+    toggleLoad();
+    try {
+      const response = await fetch('http://localhost:5000/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formValues.email,
+          password: formValues.password,
+        }),
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      const user: UserInterface = responseData.user;
+
+      login({ username: user.username, email: user.email, id: user.id });
+    } catch (err) {
+      console.log(err);
+      toggleLoad();
+    }
+  };
 
   return (
     <form onSubmit={formik.handleSubmit} className="login-form">
