@@ -10,9 +10,9 @@ import Navigation from './shared/components/Navigation';
 import MapPage from './pages/Map/MapPage';
 import Auth from './pages/Auth/Auth';
 import ShowUser from './pages/ShowUser/ShowUser';
-import AuthContext from './store/auth-ctx';
+import AuthContext from './context/auth-ctx';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { LocationContextProvider } from './store/location-ctx';
+import { LocationContextProvider } from './context/location-ctx';
 
 const theme = createTheme({
   palette: {

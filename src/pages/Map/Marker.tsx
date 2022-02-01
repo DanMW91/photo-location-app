@@ -5,7 +5,7 @@ import {
   useCallback,
   useContext,
 } from 'react';
-import LocationContext from '../../store/location-ctx';
+import LocationContext from '../../context/location-ctx';
 import { MarkerDetails } from './MapPage';
 
 interface MarkerProps extends google.maps.MarkerOptions {

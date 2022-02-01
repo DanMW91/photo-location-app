@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
-import AuthContext from '../../../store/auth-ctx';
+import AuthContext from '../../../context/auth-ctx';
 import './Form.css';
 
 const validationSchema = yup.object().shape({

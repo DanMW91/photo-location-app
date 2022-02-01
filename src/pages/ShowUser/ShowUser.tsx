@@ -3,8 +3,8 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { USERS } from '../Auth/components/LoginForm';
 import { UserInterface } from '../Auth/components/LoginForm';
-import { PHOTOS } from '../../store/location-ctx';
-import { PhotoInterface } from '../../store/location-ctx';
+import { PHOTOS } from '../../context/location-ctx';
+import { PhotoInterface } from '../../context/location-ctx';
 import PhotoList from '../Map/LocationDetail/PhotoList/PhotoList';
 
 const ShowUser: FunctionComponent = () => {

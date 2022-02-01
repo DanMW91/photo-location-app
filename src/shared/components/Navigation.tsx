@@ -9,7 +9,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import { Paper } from '@mui/material';
-import AuthContext from '../../store/auth-ctx';
+import AuthContext from '../../context/auth-ctx';
 
 const Navigation: FunctionComponent = () => {
   const [value, setValue] = useState();

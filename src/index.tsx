@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { AuthContextProvider } from './store/auth-ctx';
+import { AuthContextProvider } from './context/auth-ctx';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(

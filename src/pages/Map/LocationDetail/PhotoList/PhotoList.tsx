@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import PhotoCard from './PhotoCard';
-import { PhotoInterface } from '../../../../store/location-ctx';
+import { PhotoInterface } from '../../../../context/location-ctx';
 
 interface PhotoListProps {
   images: PhotoInterface[] | null;

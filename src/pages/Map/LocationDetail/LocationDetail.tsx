@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext } from 'react';
-import LocationContext from '../../../store/location-ctx';
+import LocationContext from '../../../context/location-ctx';
 import PhotoList from './PhotoList/PhotoList';
 import { MarkerDetails } from '../MapPage';
 

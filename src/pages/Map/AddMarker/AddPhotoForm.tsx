@@ -3,10 +3,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
-import { PhotoInterface } from '../../../store/location-ctx';
+import { PhotoInterface } from '../../../context/location-ctx';
 import { MarkerFormProps } from './AddMarkerModal';
-import LocationContext from '../../../store/location-ctx';
-import AuthContext from '../../../store/auth-ctx';
+import LocationContext from '../../../context/location-ctx';
+import AuthContext from '../../../context/auth-ctx';
 import '../../Auth/components/Form.css';
 
 interface AddPhotoFormProps extends MarkerFormProps {

@@ -11,7 +11,7 @@ import { Container, Paper } from '@mui/material';
 import Marker from './Marker';
 import Map from './Map';
 import LocationDetail from './LocationDetail/LocationDetail';
-import LocationContext from '../../store/location-ctx';
+import LocationContext from '../../context/location-ctx';
 import AddMarkerModal from './AddMarker/AddMarkerModal';
 
 export interface MarkerDetails {
