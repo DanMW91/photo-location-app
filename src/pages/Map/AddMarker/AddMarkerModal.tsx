@@ -7,7 +7,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddMarkerForm from './AddMarkerForm';
 import AddPhotoForm from './AddPhotoForm';
-import { MarkerDetails } from '../MapPage';
 import { FormProps } from '../../Auth/components/LoginForm';
 
 interface AddMarkerModalProps {
@@ -15,11 +14,23 @@ interface AddMarkerModalProps {
   clickedCoords: { lat: number; lng: number };
   handleClickOpen(): void;
   handleClose(): void;
-  onAddMarker(newMarker: MarkerDetails | undefined): void;
+  onAddMarker(newMarker: MarkerRefInterface | undefined): void;
 }
 
 export interface MarkerFormProps extends FormProps {
   switchForm(): void;
+}
+
+export interface MarkerRefInterface {
+  marker: {
+    coords: {
+      lat: number;
+      lng: number;
+    };
+    name: string;
+    description: string;
+  };
+  photo: { title: string; url: string; description: string; user: string };
 }
 
 const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
@@ -32,14 +43,40 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [showMarkerForm, setShowMarkerForm] = useState(true);
   // const [markerId, setMarkerId] = useState('');
-  const markerRef = useRef<MarkerDetails>();
+  const markerRef = useRef<MarkerRefInterface>({
+    marker: {
+      coords: {
+        lat: 0,
+        lng: 0,
+      },
+      name: '',
+      description: '',
+    },
+    photo: { title: '', url: '', description: '', user: '' },
+  });
 
-  const storeMarkerRef = (marker: MarkerDetails) => {
-    markerRef.current = marker;
+  const storeMarkerRef = (newMarker: {
+    coords: {
+      lat: number;
+      lng: number;
+    };
+    name: string;
+    description: string;
+  }): void => {
+    markerRef.current.marker = newMarker;
+  };
+
+  const addPhotoToMarkerRef = (newPhoto: {
+    title: string;
+    url: string;
+    description: string;
+    user: string;
+  }): void => {
+    markerRef.current.photo = newPhoto;
   };
 
   const addMarker = () => {
-    onAddMarker(markerRef.current);
+    onAddMarker(markerRef?.current);
   };
 
   return (
@@ -60,6 +97,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
               toggleLoad={() => setLoading((prevState) => !prevState)}
               switchForm={() => setShowMarkerForm(false)}
               storeMarker={storeMarkerRef}
+
               // setMarkerId={setMarkerId}
             />
           )}
@@ -68,7 +106,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
               loading={loading}
               toggleLoad={() => setLoading((prevState) => !prevState)}
               switchForm={() => setShowMarkerForm(true)}
-              markerId={markerRef.current?.id}
+              addPhotoToMarker={addPhotoToMarkerRef}
               addMarker={addMarker}
               closeMarkerModal={handleClose}
             />

@@ -3,16 +3,19 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
-import { PhotoInterface } from '../../../context/location-ctx';
 import { MarkerFormProps } from './AddMarkerModal';
-import LocationContext from '../../../context/location-ctx';
 import AuthContext from '../../../context/auth-ctx';
 import '../../Auth/components/Form.css';
 
 interface AddPhotoFormProps extends MarkerFormProps {
-  markerId: string | undefined;
   addMarker(): void;
   closeMarkerModal(): void;
+  addPhotoToMarker(newPhoto: {
+    title: string;
+    url: string;
+    description: string;
+    user: string;
+  }): void;
 }
 
 const validationSchema = yup.object().shape({
@@ -28,11 +31,10 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
   loading,
   toggleLoad,
   switchForm,
-  markerId,
+  addPhotoToMarker,
   addMarker,
   closeMarkerModal,
 }) => {
-  const { addPhoto } = useContext(LocationContext);
   const { loginState } = useContext(AuthContext);
 
   const formik = useFormik({
@@ -47,18 +49,16 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
       toggleLoad();
       console.log(loginState.activeUser.id);
       setTimeout(() => {
-        const newPhoto: PhotoInterface = {
+        const newPhoto = {
           // need to set user in authcontext and extract current user from there
-          userId: loginState.activeUser.id,
+          user: loginState.activeUser.id,
           title: values.photoTitle,
           description: values.photoDescription,
           url: values.photoUrl,
-          locationId: markerId,
         };
-        addPhoto(newPhoto);
+        addPhotoToMarker(newPhoto);
         addMarker();
         switchForm();
-        toggleLoad();
         closeMarkerModal();
       }, 1000);
     },

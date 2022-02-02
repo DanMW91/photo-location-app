@@ -15,7 +15,7 @@ const ShowUser: FunctionComponent = () => {
   useEffect(() => {
     const foundUser = USERS.find((user) => user.id === userId);
     setUser(foundUser);
-    const foundPhotos = PHOTOS.filter((photos) => photos.userId === userId);
+    const foundPhotos = PHOTOS.filter((photos) => photos.user === userId);
     setUserPhotos(foundPhotos);
   }, [userId]);
 

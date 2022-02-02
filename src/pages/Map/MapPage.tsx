@@ -13,6 +13,7 @@ import Map from './Map';
 import LocationDetail from './LocationDetail/LocationDetail';
 import LocationContext from '../../context/location-ctx';
 import AddMarkerModal from './AddMarker/AddMarkerModal';
+import { MarkerRefInterface } from './AddMarker/AddMarkerModal';
 
 export interface MarkerDetails {
   id: string;
@@ -24,23 +25,8 @@ export interface MarkerDetails {
   description: string;
 }
 
-const MARKERS = [
-  {
-    id: 'loc1',
-    coords: { lat: 51.52019998206608, lng: -0.09376439878087152 },
-    name: 'Barbican Estate',
-    description: 'Amazing Brutalist Architecture',
-  },
-  {
-    id: 'loc2',
-    coords: { lat: 54.52019998206608, lng: -0.09376439878087152 },
-    name: 'Barbican Estate',
-    description: 'Amazing Brutalist Architecture',
-  },
-];
-
 const MapPage: FunctionComponent = () => {
-  const [markers, setMarkers] = useState<MarkerDetails[]>(MARKERS);
+  const [markers, setMarkers] = useState<MarkerDetails[]>();
   const [zoom, setZoom] = useState(14); // initial zoom
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: 0,
@@ -48,6 +34,7 @@ const MapPage: FunctionComponent = () => {
   });
   const [openMarkerModal, setOpenMarkerModal] = useState(false);
   const clickedCoordsRef = useRef({ lat: 0, lng: 0 });
+  const locationCtx = useContext(LocationContext);
 
   const handleClickOpenMarkerModal = () => {
     setOpenMarkerModal(true);
@@ -56,12 +43,30 @@ const MapPage: FunctionComponent = () => {
   const handleCloseMarkerModal = () => {
     setOpenMarkerModal(false);
   };
-  const locationCtx = useContext(LocationContext);
 
-  const addMarker = (newMarker: MarkerDetails) => {
-    setMarkers((prevState: MarkerDetails[]) => {
-      return [...prevState, newMarker];
-    });
+  const addMarker = async (newMarker: MarkerRefInterface) => {
+    console.log(newMarker);
+    // setMarkers();
+    try {
+      const response = await fetch('http://localhost:5000/markers/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newMarker),
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchMarkers = async () => {
+    const response = await fetch('http://localhost:5000/markers/all');
+    const responseData = await response.json();
+    console.log(responseData);
+    setMarkers(responseData.markers);
   };
 
   const setUserLocation = (userCoords: {
@@ -74,6 +79,7 @@ const MapPage: FunctionComponent = () => {
 
   // fetch users location and center map
   useEffect(() => {
+    fetchMarkers();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setUserLocation(position.coords);
@@ -111,9 +117,14 @@ const MapPage: FunctionComponent = () => {
             zoom={zoom}
             style={{ flexGrow: '1', height: '80vw', margin: '10px' }}
           >
-            {markers.map((marker, i) => (
-              <Marker key={i} position={marker.coords} markerDetails={marker} />
-            ))}
+            {markers &&
+              markers.map((marker, i) => (
+                <Marker
+                  key={i}
+                  position={marker.coords}
+                  markerDetails={marker}
+                />
+              ))}
           </Map>
         </Wrapper>
       </div>

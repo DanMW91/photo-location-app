@@ -14,9 +14,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { USERS, UserInterface } from '../../../Auth/components/LoginForm';
 import { Link } from 'react-router-dom';
+import { PhotoInterface } from '../../../../context/location-ctx';
 
 interface PhotoProps {
-  photo: { title: string; url: string; description: string; userId: string };
+  photo: PhotoInterface;
   isMapPage: boolean | undefined;
 }
 
@@ -41,10 +42,10 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
 
   useEffect(() => {
     const photoUser: UserInterface | undefined = USERS.find(
-      (user) => user.id === photo.userId
+      (user) => user.id === photo.user
     );
     setUser(photoUser);
-  }, [photo.userId]);
+  }, [photo.user]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

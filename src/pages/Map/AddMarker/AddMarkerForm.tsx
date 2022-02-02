@@ -4,14 +4,20 @@ import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
 import { MarkerFormProps } from './AddMarkerModal';
-import { MarkerDetails } from '../MapPage';
-import { v4 as uuidv4 } from 'uuid';
+
 import '../../Auth/components/Form.css';
 
 interface AddMarkerFormProps extends MarkerFormProps {
   // setMarkerId(markerId: string): void;
   clickedCoords: { lat: number; lng: number };
-  storeMarker(marker: MarkerDetails): void;
+  storeMarker(marker: {
+    coords: {
+      lat: number;
+      lng: number;
+    };
+    name: string;
+    description: string;
+  }): void;
 }
 
 const validationSchema = yup.object().shape({
@@ -40,18 +46,16 @@ const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       toggleLoad();
 
       setTimeout(() => {
-        const locId = uuidv4();
         const newLoc = {
-          id: locId,
           coords: clickedCoords,
           name: values.locationName,
           description: values.description,
         };
-        console.log(newLoc);
+        // console.log(newLoc);
         // setMarkerId(locId);
         storeMarker(newLoc);
         switchForm();
