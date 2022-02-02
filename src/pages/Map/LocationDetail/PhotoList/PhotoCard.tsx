@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useEffect } from 'react';
+import { useState, FunctionComponent } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,12 +12,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { USERS, UserInterface } from '../../../Auth/components/LoginForm';
+
 import { Link } from 'react-router-dom';
+import { LocationInterface } from '../../../../context/location-ctx';
 import { PhotoInterface } from '../../../../context/location-ctx';
 
 interface PhotoProps {
-  photo: PhotoInterface;
+  photo: PhotoInterface<LocationInterface> | PhotoInterface<string>;
   isMapPage: boolean | undefined;
 }
 
@@ -38,15 +39,8 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
   const [expanded, setExpanded] = useState(false);
-  const [user, setUser] = useState<UserInterface | undefined>();
 
-  useEffect(() => {
-    const photoUser: UserInterface | undefined = USERS.find(
-      (user) => user.id === photo.user
-    );
-    setUser(photoUser);
-  }, [photo.user]);
-
+  console.log(photo);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -70,13 +64,21 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
         }
         title={photo.title}
         subheader={
-          isMapPage && (
+          isMapPage ? (
             <div>
               Uploaded by:{' '}
-              <Link style={{ textDecoration: 'none' }} to={`/user/${user?.id}`}>
-                {user?.username}
+              <Link
+                style={{ textDecoration: 'none' }}
+                to={`/user/${photo.user?.id}`}
+              >
+                {photo.user?.username}
               </Link>
             </div>
+          ) : (
+            !isMapPage &&
+            typeof photo.location !== 'string' && (
+              <div>Taken at: {photo?.location?.name}</div>
+            )
           )
         }
       />

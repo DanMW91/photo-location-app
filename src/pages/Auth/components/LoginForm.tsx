@@ -22,21 +22,6 @@ export interface FormProps {
   toggleLoad(): void;
 }
 
-export const USERS = [
-  {
-    id: 'u1',
-    username: 'HamSandwich',
-    email: 'ham@ham.com',
-    password: '123123123',
-  },
-  {
-    id: 'u2',
-    username: 'cheese sarn',
-    email: 'sarn@sarn.com',
-    password: '123123123',
-  },
-];
-
 export interface UserInterface {
   id: string;
   username: string;

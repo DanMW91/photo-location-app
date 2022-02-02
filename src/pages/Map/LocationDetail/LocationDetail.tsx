@@ -1,11 +1,5 @@
-import {
-  FunctionComponent,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import LocationContext from '../../../context/location-ctx';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+
 import PhotoList from './PhotoList/PhotoList';
 import { MarkerDetails } from '../MapPage';
 
@@ -16,7 +10,6 @@ interface LocationProps {
 const LocationDetail: FunctionComponent<LocationProps> = ({
   locationDetail,
 }) => {
-  const locationCtx = useContext(LocationContext);
   const [photos, setPhotos] = useState([]);
 
   const fetchLocationPhotos = useCallback(async () => {
@@ -35,6 +28,7 @@ const LocationDetail: FunctionComponent<LocationProps> = ({
   return (
     <>
       <div>{locationDetail.name}</div>
+      <div>{locationDetail.description}</div>
       <PhotoList isMapPage={true} images={photos} />
     </>
   );

@@ -1,23 +1,37 @@
 import { Container, Paper } from '@mui/material';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { USERS } from '../Auth/components/LoginForm';
-import { UserInterface } from '../Auth/components/LoginForm';
-import { PHOTOS } from '../../context/location-ctx';
+import { LocationInterface } from '../../context/location-ctx';
 import { PhotoInterface } from '../../context/location-ctx';
 import PhotoList from '../Map/LocationDetail/PhotoList/PhotoList';
 
+interface userObjectInterface {
+  username: string;
+  photos: PhotoInterface<LocationInterface>[];
+}
+
 const ShowUser: FunctionComponent = () => {
   const userId = useParams().userId;
-  const [user, setUser] = useState<UserInterface | undefined>();
-  const [userPhotos, setUserPhotos] = useState<PhotoInterface[] | null>(null);
+
+  const [user, setUser] = useState<userObjectInterface | null>(null);
+
+  const fetchPhotos = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/photos/user/${userId}`
+      );
+      const responseData = await response.json();
+      console.log(responseData);
+      setUser(responseData);
+      // const user: UserInterface = responseData.user;
+    } catch (err) {
+      console.log(err);
+    }
+  }, [userId]);
 
   useEffect(() => {
-    const foundUser = USERS.find((user) => user.id === userId);
-    setUser(foundUser);
-    const foundPhotos = PHOTOS.filter((photos) => photos.user === userId);
-    setUserPhotos(foundPhotos);
-  }, [userId]);
+    fetchPhotos();
+  }, [fetchPhotos]);
 
   return (
     <Container>
@@ -31,8 +45,8 @@ const ShowUser: FunctionComponent = () => {
           paddingBottom: '20px;',
         }}
       >
-        <h2>{user?.username}</h2>
-        <PhotoList images={userPhotos} />
+        <h2>{user?.username}'s Photos</h2>
+        {user && <PhotoList images={user.photos} />}
       </Paper>
     </Container>
   );

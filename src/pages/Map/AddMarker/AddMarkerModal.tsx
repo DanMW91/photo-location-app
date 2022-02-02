@@ -15,6 +15,7 @@ interface AddMarkerModalProps {
   handleClickOpen(): void;
   handleClose(): void;
   onAddMarker(newMarker: MarkerRefInterface | undefined): void;
+  fetchMarkers(): void;
 }
 
 export interface MarkerFormProps extends FormProps {
@@ -39,6 +40,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
   handleClose,
   clickedCoords,
   onAddMarker,
+  fetchMarkers,
 }) => {
   const [loading, setLoading] = useState(false);
   const [showMarkerForm, setShowMarkerForm] = useState(true);
@@ -77,6 +79,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
 
   const addMarker = () => {
     onAddMarker(markerRef?.current);
+    fetchMarkers();
   };
 
   return (

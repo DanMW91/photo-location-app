@@ -12,6 +12,7 @@ import Marker from './Marker';
 import Map from './Map';
 import LocationDetail from './LocationDetail/LocationDetail';
 import LocationContext from '../../context/location-ctx';
+import AuthContext from '../../context/auth-ctx';
 import AddMarkerModal from './AddMarker/AddMarkerModal';
 import { MarkerRefInterface } from './AddMarker/AddMarkerModal';
 
@@ -34,6 +35,9 @@ const MapPage: FunctionComponent = () => {
   });
   const [openMarkerModal, setOpenMarkerModal] = useState(false);
   const clickedCoordsRef = useRef({ lat: 0, lng: 0 });
+  const {
+    loginState: { isLoggedIn },
+  } = useContext(AuthContext);
   const locationCtx = useContext(LocationContext);
 
   const handleClickOpenMarkerModal = () => {
@@ -93,9 +97,11 @@ const MapPage: FunctionComponent = () => {
   };
 
   const handleMapClick = (e: google.maps.MapMouseEvent) => {
-    const coords = e.latLng.toJSON();
-    clickedCoordsRef.current = coords;
-    setOpenMarkerModal(true);
+    if (isLoggedIn) {
+      const coords = e.latLng.toJSON();
+      clickedCoordsRef.current = coords;
+      setOpenMarkerModal(true);
+    }
 
     // console.log(clicks);
     // setClicks([...clicks, e.latLng]);
@@ -146,6 +152,7 @@ const MapPage: FunctionComponent = () => {
               handleClickOpen={handleClickOpenMarkerModal}
               handleClose={handleCloseMarkerModal}
               open={openMarkerModal}
+              fetchMarkers={fetchMarkers}
             />
           )}
 

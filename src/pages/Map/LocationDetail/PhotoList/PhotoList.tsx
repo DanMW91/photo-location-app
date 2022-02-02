@@ -2,9 +2,10 @@ import { FunctionComponent } from 'react';
 
 import PhotoCard from './PhotoCard';
 import { PhotoInterface } from '../../../../context/location-ctx';
+import { LocationInterface } from '../../../../context/location-ctx';
 
 interface PhotoListProps {
-  images: PhotoInterface[] | null;
+  images: PhotoInterface<LocationInterface>[] | null;
   isMapPage?: boolean | undefined;
 }
 
