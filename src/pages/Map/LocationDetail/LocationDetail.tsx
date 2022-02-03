@@ -10,7 +10,7 @@ interface LocationProps {
 const LocationDetail: FunctionComponent<LocationProps> = ({
   locationDetail,
 }) => {
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState();
 
   const fetchLocationPhotos = useCallback(async () => {
     const response = await fetch(
@@ -29,7 +29,7 @@ const LocationDetail: FunctionComponent<LocationProps> = ({
     <>
       <div>{locationDetail.name}</div>
       <div>{locationDetail.description}</div>
-      <PhotoList isMapPage={true} images={photos} />
+      {photos && <PhotoList isMapPage={true} images={photos} />}
     </>
   );
 };

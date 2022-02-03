@@ -63,8 +63,11 @@ const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
       });
       const responseData = await response.json();
       console.log(responseData);
-      const user: UserInterface = responseData.user;
 
+      if (!responseData.ok) {
+        throw new Error(responseData.message);
+      }
+      const user: UserInterface = responseData.user;
       login({ username: user.username, email: user.email, id: user.id });
     } catch (err) {
       console.log(err);

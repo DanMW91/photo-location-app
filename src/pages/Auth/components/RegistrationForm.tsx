@@ -63,6 +63,9 @@ const RegistrationForm: FunctionComponent<FormProps> = ({
 
       const responseData = await response.json();
       console.log(responseData);
+      if (!responseData.ok) {
+        throw new Error(responseData.message);
+      }
       const user: UserInterface = responseData.user;
       login({ username: user.username, email: user.email, id: user.id });
     } catch (err) {

@@ -1,13 +1,13 @@
 import { Container, Paper } from '@mui/material';
 import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { LocationInterface } from '../../context/location-ctx';
+
 import { PhotoInterface } from '../../context/location-ctx';
 import PhotoList from '../Map/LocationDetail/PhotoList/PhotoList';
 
 interface userObjectInterface {
   username: string;
-  photos: PhotoInterface<LocationInterface>[];
+  photos: PhotoInterface[];
 }
 
 const ShowUser: FunctionComponent = () => {

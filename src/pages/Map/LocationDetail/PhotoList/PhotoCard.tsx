@@ -14,11 +14,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { Link } from 'react-router-dom';
-import { LocationInterface } from '../../../../context/location-ctx';
+
 import { PhotoInterface } from '../../../../context/location-ctx';
 
 interface PhotoProps {
-  photo: PhotoInterface<LocationInterface> | PhotoInterface<string>;
+  photo: PhotoInterface;
   isMapPage: boolean | undefined;
 }
 

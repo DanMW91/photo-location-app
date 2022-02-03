@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  FunctionComponent,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useState, FunctionComponent, useCallback } from 'react';
 import { UserInterface } from '../pages/Auth/components/LoginForm';
 
 export interface LocationInterface {
@@ -16,12 +11,12 @@ export interface LocationInterface {
   description: string;
 }
 
-export interface PhotoInterface<LocationType> {
+export interface PhotoInterface {
   title: string;
   url: string;
   description: string;
   user: UserInterface;
-  location: LocationType;
+  location: LocationInterface;
 }
 
 interface LocationContextInterface {
@@ -43,7 +38,7 @@ const LocationContext = React.createContext<LocationContextInterface>({
 
 export const LocationContextProvider: FunctionComponent = ({ children }) => {
   const [location, setLocation] = useState<LocationInterface | null>(null);
-  const [photos, setPhotos] = useState<PhotoInterface<string>[] | null>(null);
+  // const [photos, setPhotos] = useState<PhotoInterface<string>[] | null>(null);
 
   const setActiveLocation = useCallback((location: LocationInterface) => {
     // TO DO fetch location from back-end
