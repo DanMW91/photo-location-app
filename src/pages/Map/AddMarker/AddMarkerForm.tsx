@@ -35,7 +35,6 @@ const AddMarkerForm: FunctionComponent<AddMarkerFormProps> = ({
   loading,
   toggleLoad,
   switchForm,
-  // setMarkerId,
   clickedCoords,
   storeMarker,
 }) => {
