@@ -15,7 +15,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { Link } from 'react-router-dom';
 
-import { PhotoInterface } from '../../../../context/location-ctx';
+import { PhotoInterface } from '../../context/location-ctx';
 
 interface PhotoProps {
   photo: PhotoInterface;
@@ -49,7 +49,7 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
     <Card
       // color={}
       variant="outlined"
-      sx={{ maxWidth: 800, width: '90%', marginTop: '5%' }}
+      sx={{ maxWidth: 800, width: '90%', marginY: '5%' }}
     >
       <CardHeader
         // avatar={
@@ -85,7 +85,7 @@ const PhotoCard: FunctionComponent<PhotoProps> = ({ photo, isMapPage }) => {
       <CardMedia
         component="img"
         height="194"
-        image={photo.url}
+        image={'http://localhost:5000/' + photo.file}
         alt="something"
       />
       <CardActions disableSpacing>

@@ -64,7 +64,7 @@ const LoginForm: FunctionComponent<FormProps> = ({ loading, toggleLoad }) => {
       const responseData = await response.json();
       console.log(responseData);
 
-      if (!responseData.ok) {
+      if (!response.ok) {
         throw new Error(responseData.message);
       }
       const user: UserInterface = responseData.user;

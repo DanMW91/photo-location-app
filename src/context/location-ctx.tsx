@@ -13,7 +13,7 @@ export interface LocationInterface {
 
 export interface PhotoInterface {
   title: string;
-  url: string;
+  file: string;
   description: string;
   user: UserInterface;
   location: LocationInterface;

@@ -1,18 +1,18 @@
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent, useContext, ChangeEvent } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, CircularProgress } from '@mui/material';
 import { TextField } from '@mui/material';
-import { MarkerFormProps } from './AddMarkerModal';
-import AuthContext from '../../../context/auth-ctx';
-import '../../Auth/components/Form.css';
+import { FormProps } from '../../pages/Auth/components/LoginForm';
+import AuthContext from '../../context/auth-ctx';
+import ImageUpload from './FormComponents/ImageUpload';
+import '../../pages/Auth/components/Form.css';
 
-interface AddPhotoFormProps extends MarkerFormProps {
-  addMarker(): void;
-  closeMarkerModal(): void;
-  addPhotoToMarker(newPhoto: {
+interface AddPhotoFormProps extends FormProps {
+  closeModal(): void;
+  addPhoto(newPhoto: {
     title: string;
-    url: string;
+    photoFile: any;
     description: string;
     user: string;
   }): void;
@@ -23,17 +23,21 @@ const validationSchema = yup.object().shape({
     .string()
     .min(5, 'Photo title must have a minimum name length of 5 characters.')
     .required('Photo title is required.'),
-  photoDescription: yup.string().min(10),
-  photoUrl: yup.string().required('Photo url is required'),
+  photoDescription: yup
+    .string()
+    .min(10, 'Photo description must be a minimum of 10 characters.')
+    .required('Photo Description is required.'),
+  photoFile: yup
+    .mixed()
+    // .test('name', 'File must be uploaded', (value: any) => value.length > 0)
+    .required('Photo is required'),
 });
 
 const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
   loading,
   toggleLoad,
-  switchForm,
-  addPhotoToMarker,
-  addMarker,
-  closeMarkerModal,
+  addPhoto,
+  closeModal,
 }) => {
   const { loginState } = useContext(AuthContext);
 
@@ -41,26 +45,20 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
     initialValues: {
       photoTitle: '',
       photoDescription: '',
-      photoUrl: '',
+      photoFile: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       toggleLoad();
-      console.log(loginState.activeUser.id);
-      setTimeout(() => {
-        const newPhoto = {
-          // need to set user in authcontext and extract current user from there
-          user: loginState.activeUser.id,
-          title: values.photoTitle,
-          description: values.photoDescription,
-          url: values.photoUrl,
-        };
-        addPhotoToMarker(newPhoto);
-        addMarker();
-        switchForm();
-        closeMarkerModal();
-      }, 1000);
+
+      const newPhoto = {
+        user: loginState.activeUser.id,
+        title: values.photoTitle,
+        description: values.photoDescription,
+        photoFile: values.photoFile,
+      };
+      addPhoto(newPhoto);
+      closeModal();
     },
   });
 
@@ -100,17 +98,19 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
         }
         sx={{ mt: 3 }}
       />
-      <TextField
-        fullWidth
-        id="photoUrl"
-        name="photoUrl"
-        label="Photo Url"
-        value={formik.values.photoUrl}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.photoUrl && Boolean(formik.errors.photoUrl)}
-        helperText={formik.touched.photoUrl && formik.errors.photoUrl}
-        sx={{ mt: 3 }}
+
+      <ImageUpload
+        type="file"
+        id="photoFile"
+        name="photoFile"
+        error={Boolean(formik.errors.photoFile)}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          const files = event.target.files;
+          if (files) {
+            let myFile = Array.from(files)[0];
+            formik.setFieldValue('photoFile', myFile);
+          }
+        }}
       />
 
       <Button

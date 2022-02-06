@@ -5,6 +5,7 @@ import {
   useContext,
   useRef,
 } from 'react';
+
 import MAP_API_KEY from '../../dev-api-key';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { Container, Paper } from '@mui/material';
@@ -51,16 +52,27 @@ const MapPage: FunctionComponent = () => {
   const addMarker = async (newMarker: MarkerRefInterface) => {
     console.log(newMarker);
     // setMarkers();
+
     try {
+      const markerData = new FormData();
+
+      markerData.append('markerName', newMarker.marker.name);
+      markerData.append('markerLat', newMarker.marker.coords.lat.toString());
+      markerData.append('markerLng', newMarker.marker.coords.lng.toString());
+      markerData.append('markerDesc', newMarker.marker.description);
+      markerData.append('photoTitle', newMarker.photo.title);
+      markerData.append('photoUser', newMarker.photo.user);
+      markerData.append('photoDesc', newMarker.photo.description);
+      markerData.append('photoFile', newMarker.photo.photoFile);
+
       const response = await fetch('http://localhost:5000/markers/new', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newMarker),
+        body: markerData,
       });
-      const responseData = await response.json();
-      console.log(responseData);
+      // const responseData = await response.json();
+      console.log(response);
+      console.log('made it ');
+      await fetchMarkers();
     } catch (err) {
       console.log(err);
     }

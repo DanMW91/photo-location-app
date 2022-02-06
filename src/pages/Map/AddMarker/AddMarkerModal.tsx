@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddMarkerForm from './AddMarkerForm';
-import AddPhotoForm from './AddPhotoForm';
+import AddPhotoForm from '../../../shared/components/AddPhotoForm';
 import { FormProps } from '../../Auth/components/LoginForm';
 
 interface AddMarkerModalProps {
@@ -31,7 +31,12 @@ export interface MarkerRefInterface {
     name: string;
     description: string;
   };
-  photo: { title: string; url: string; description: string; user: string };
+  photo: {
+    title: string;
+    photoFile: string | File;
+    description: string;
+    user: string;
+  };
 }
 
 const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
@@ -54,7 +59,7 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
       name: '',
       description: '',
     },
-    photo: { title: '', url: '', description: '', user: '' },
+    photo: { title: '', photoFile: '', description: '', user: '' },
   });
 
   const storeMarkerRef = (newMarker: {
@@ -70,16 +75,17 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
 
   const addPhotoToMarkerRef = (newPhoto: {
     title: string;
-    url: string;
+    photoFile: File;
     description: string;
     user: string;
   }): void => {
     markerRef.current.photo = newPhoto;
+    setShowMarkerForm(true);
+    addMarker();
   };
 
   const addMarker = () => {
     onAddMarker(markerRef?.current);
-    fetchMarkers();
   };
 
   return (
@@ -108,10 +114,8 @@ const AddMarkerModal: FunctionComponent<AddMarkerModalProps> = ({
             <AddPhotoForm
               loading={loading}
               toggleLoad={() => setLoading((prevState) => !prevState)}
-              switchForm={() => setShowMarkerForm(true)}
-              addPhotoToMarker={addPhotoToMarkerRef}
-              addMarker={addMarker}
-              closeMarkerModal={handleClose}
+              addPhoto={addPhotoToMarkerRef}
+              closeModal={handleClose}
             />
           )}
         </DialogContent>
