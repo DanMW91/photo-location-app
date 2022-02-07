@@ -103,7 +103,7 @@ const AddPhotoForm: FunctionComponent<AddPhotoFormProps> = ({
         type="file"
         id="photoFile"
         name="photoFile"
-        error={Boolean(formik.errors.photoFile)}
+        error={formik.touched.photoFile && Boolean(formik.errors.photoFile)}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           const files = event.target.files;
           if (files) {

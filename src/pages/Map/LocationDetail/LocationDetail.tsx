@@ -2,6 +2,7 @@ import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import PhotoList from './PhotoList/PhotoList';
 import { MarkerDetails } from '../MapPage';
+import AddPhotoModal from './AddPhotoModal';
 
 interface LocationProps {
   locationDetail: MarkerDetails;
@@ -29,6 +30,7 @@ const LocationDetail: FunctionComponent<LocationProps> = ({
     <>
       <div>{locationDetail.name}</div>
       <div>{locationDetail.description}</div>
+      <AddPhotoModal locationName={locationDetail.name} />
       {photos && <PhotoList isMapPage={true} images={photos} />}
     </>
   );

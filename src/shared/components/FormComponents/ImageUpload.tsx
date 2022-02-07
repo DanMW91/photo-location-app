@@ -5,7 +5,7 @@ interface ImageUploadProps {
   type: string;
   id: string;
   name: string;
-  error: boolean;
+  error: boolean | undefined;
   onChange(e: ChangeEvent<HTMLInputElement>): void;
 }
 
